@@ -14,15 +14,24 @@
             background: black;
             overflow: hidden;
             font-family: 'Arial', sans-serif;
-            text-align: center;
         }
-        .fireworks {
-            position: fixed;
+        h1 {
+            color: #ffcc00;
+            font-size: 3em;
+            position: absolute;
+            top: 50px;
             width: 100%;
-            height: 100%;
-            background: url('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHg5cDYzZmFvazdhbGY5M2o4cDY3bWVsY2JkNXUxM24wcWhvYTIydiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0O9xuNakDBl7aVIQ/giphy.gif') center/cover no-repeat;
-            opacity: 0.7;
-            z-index: -1;
+            text-align: center;
+            text-shadow: 4px 4px 10px #ff6600;
+            animation: textGlow 2s infinite alternate, moveText 5s infinite alternate;
+        }
+        @keyframes textGlow {
+            0% { text-shadow: 4px 4px 10px #ff0000; }
+            100% { text-shadow: 4px 4px 20px #ff6600; }
+        }
+        @keyframes moveText {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
         }
         .typing-container {
             position: absolute;
@@ -43,6 +52,14 @@
         }
         @keyframes blink {
             50% { border-color: transparent; }
+        }
+        .fireworks {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url('con.gif') center/cover no-repeat;
+            opacity: 0.7;
+            z-index: -1;
         }
         .balloon {
             position: absolute;
@@ -69,8 +86,8 @@
             100% { transform: translate(var(--x), var(--y)) scale(0.5); opacity: 0; }
         }
         .pooper {
-            width: 150px;
-            height: 150px;
+            width: 50px;
+            height: 50px;
             background: url('https://cdn-icons-png.flaticon.com/512/148/148744.png') no-repeat center;
             background-size: contain;
             cursor: pointer;
@@ -83,17 +100,18 @@
 </head>
 <body>
     <div class="fireworks"></div>
+    <h1>🎉 Happy Birthday, Tanu! 🎈</h1>
+   
     <div class="typing-container" id="typing-text"></div>
     <div class="pooper"></div>
 
-    <audio id="music" src="https://www.fesliyanstudios.com/play-mp3/4387" preload="auto"></audio>
+    <audio id="music" src="fireworks-29629.mp3" preload="auto"></audio>
 
     <script>
-        const messages = [
-            "🎉 Happy Birthday, Tanu Ji! 🎂",
-            "Wishing you a day filled with laughter, love, and happiness! 💖",
-            "May this year bring you exciting adventures and beautiful memories! ✨",
-            "Stay amazing, and keep shining! 🎈🎁"
+       const messages = [
+            "🎉 Happy Birthday, Friend! 🎈",
+            "🎂 Wishing You A Fantastic Year! 🎊",
+            "🎁 Stay Happy, Healthy & Blessed! 💖"
         ];
         let messageIndex = 0;
         let charIndex = 0;
@@ -119,7 +137,6 @@
                 setTimeout(typeText, 1000);
             }
         }
-
         function createBalloon() {
             let balloon = document.createElement("div");
             balloon.className = "balloon";
@@ -142,6 +159,18 @@
                 document.body.appendChild(confetti);
                 setTimeout(() => confetti.remove(), 1500);
             }
+
+            for (let i = 0; i < 30; i++) {
+                let firework = document.createElement("div");
+                firework.className = "firework";
+                firework.style.left = `${x}px`;
+                firework.style.top = `${y}px`;
+                firework.style.setProperty("--x", `${Math.random() * 250 - 125}px`);
+                firework.style.setProperty("--y", `${Math.random() * 250 - 125}px`);
+                firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                document.body.appendChild(firework);
+                setTimeout(() => firework.remove(), 1500);
+            }
         }
 
         function autoPopper() {
@@ -152,15 +181,10 @@
             setTimeout(autoPopper, Math.random() * 5000 + 2000);
         }
 
-        setTimeout(typeText, 1000);
         setInterval(createBalloon, 700);
         setTimeout(autoPopper, 3000);
 
-         @media (max-width: 768px) {
-            .popper {
-                animation-duration: 3s;
-            }
-        }
+       
     </script>
 </body>
 </html>

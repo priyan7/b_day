@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 Happy Birthday! 🎆</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: black;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+        .fireworks {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url('https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWIxbnVtNjQzMjdvMXZ2Z3h4cWQxM2t3ZnRjbjA3M3hxMnh5OTRqaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Jjfa6PH31VRgA/giphy.gif') center/cover no-repeat;
+            opacity: 0.7;
+            z-index: -1;
+        }
+        .typing-container {
+            position: absolute;
+            top: 100px;
+            width: 100%;
+            text-align: center;
+            font-size: 3em;
+            color: #ffcc00;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 5px solid #ff6600;
+            display: inline-block;
+            animation: typing 4s steps(30) infinite alternate, blink 0.5s infinite;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 50%; }
+        }
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            width: 60px;
+            height: 80px;
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { bottom: -100px; opacity: 1; transform: translateX(0) rotate(0deg); }
+            100% { bottom: 110%; opacity: 0; transform: translateX(calc(-50px + 100px * random())) rotate(360deg); }
+        }
+        .confetti, .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: yellow;
+            opacity: 0;
+            animation: burst 1.5s ease-out;
+        }
+        @keyframes burst {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(0.5); opacity: 0; }
+        }
+        .pooper {
+            width: 150px;
+            height: 150px;
+            background: url('https://cdn-icons-png.flaticon.com/512/148/148744.png') no-repeat center;
+            background-size: contain;
+            cursor: pointer;
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="fireworks"></div>
+    <div class="typing-container" id="typing-text"></div>
+    <div class="pooper"></div>
+
+    <audio id="music" src="https://www.fesliyanstudios.com/play-mp3/4387" preload="auto"></audio>
+
+    <script>
+        const messages = [
+            "🎉 Happy Birthday, Tanu Ji! 🎈",
+            "🎂 Wishing You A Fantastic Year! 🎊",
+            "🎁 Stay Happy, Healthy & Blessed! 💖"
+        ];
+        let messageIndex = 0;
+        let charIndex = 0;
+        const typingElement = document.getElementById("typing-text");
+
+        function typeText() {
+            if (charIndex < messages[messageIndex].length) {
+                typingElement.textContent += messages[messageIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(typeText, 100);
+            } else {
+                setTimeout(eraseText, 2000);
+            }
+        }
+
+        function eraseText() {
+            if (charIndex > 0) {
+                typingElement.textContent = messages[messageIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(eraseText, 50);
+            } else {
+                messageIndex = (messageIndex + 1) % messages.length;
+                setTimeout(typeText, 1000);
+            }
+        }
+
+        function createBalloon() {
+            let balloon = document.createElement("div");
+            balloon.className = "balloon";
+            balloon.style.left = Math.random() * 100 + "vw";
+            balloon.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            balloon.style.animationDuration = `${Math.random() * 3 + 5}s`;
+            document.body.appendChild(balloon);
+            setTimeout(() => balloon.remove(), 7000);
+        }
+
+        function burstEffects(x, y) {
+            for (let i = 0; i < 50; i++) {
+                let confetti = document.createElement("div");
+                confetti.className = "confetti";
+                confetti.style.left = `${x}px`;
+                confetti.style.top = `${y}px`;
+                confetti.style.setProperty("--x", `${Math.random() * 300 - 150}px`);
+                confetti.style.setProperty("--y", `${Math.random() * 300 - 150}px`);
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 1500);
+            }
+        }
+
+        function autoPopper() {
+            let x = Math.random() * window.innerWidth;
+            let y = Math.random() * window.innerHeight;
+            burstEffects(x, y);
+            document.getElementById("music").play();
+            setTimeout(autoPopper, Math.random() * 5000 + 2000);
+        }
+
+        setTimeout(typeText, 1000);
+        setInterval(createBalloon, 700);
+        setTimeout(autoPopper, 3000);
+    </script>
+</body>
+</html>
